@@ -1,0 +1,6 @@
+Caddyfile
+*.log
+.DS_Store
+firebase.json
+.firebaserc
+node_modules/

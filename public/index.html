@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smoking Tigers</title>
+  <meta name="description" content="A creator-first media studio. We build shows, brands, and systems that work for creators — not platforms." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --white: #fafafa;
+      --blue: #1a3a6b;
+      --blue-light: #2a5298;
+      --smoke: #e8e4dc;
+      --muted: #6b6b6b;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--black);
+      color: var(--white);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.25rem 2.5rem;
+      background: rgba(10,10,10,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .nav-logo {
+      font-size: 1rem; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--white);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--blue-light); }
+    .nav-contact {
+      font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none; transition: color 0.2s;
+    }
+    .nav-contact:hover { color: var(--white); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 7rem 2.5rem 4rem;
+      max-width: 960px; margin: 0 auto;
+    }
+    .hero-eyebrow {
+      font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--blue-light); margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .hero-eyebrow::before {
+      content: ''; display: block; width: 2rem; height: 1px; background: var(--blue-light);
+    }
+    h1 {
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 700; line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+    }
+    h1 em {
+      font-style: normal;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255,255,255,0.35);
+    }
+    .hero-sub {
+      font-size: 1.15rem; font-weight: 300; line-height: 1.7;
+      color: rgba(255,255,255,0.6); max-width: 540px;
+      margin-bottom: 3rem;
+    }
+    .hero-cta {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      font-size: 0.85rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; text-decoration: none;
+      color: var(--white);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 0.85rem 1.75rem;
+      transition: all 0.25s;
+    }
+    .hero-cta:hover {
+      background: var(--blue);
+      border-color: var(--blue);
+    }
+    .hero-cta svg { transition: transform 0.2s; }
+    .hero-cta:hover svg { transform: translateX(3px); }
+
+    /* DIVIDER */
+    .divider {
+      width: 100%; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+      margin: 0 auto;
+    }
+
+    /* PILLARS */
+    .pillars {
+      max-width: 960px; margin: 0 auto;
+      padding: 5rem 2.5rem;
+    }
+    .pillars-label {
+      font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 3rem;
+    }
+    .pillars-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 2rem;
+    }
+    .pillar {
+      padding: 2rem;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.02);
+      transition: border-color 0.25s;
+    }
+    .pillar:hover { border-color: var(--blue-light); }
+    .pillar-num {
+      font-size: 0.65rem; letter-spacing: 0.15em; color: var(--blue-light);
+      margin-bottom: 1.25rem; font-weight: 600;
+    }
+    .pillar h3 {
+      font-size: 1.05rem; font-weight: 600; margin-bottom: 0.75rem;
+    }
+    .pillar p {
+      font-size: 0.875rem; line-height: 1.65; color: rgba(255,255,255,0.5);
+    }
+
+    /* STATEMENT */
+    .statement {
+      max-width: 960px; margin: 0 auto;
+      padding: 5rem 2.5rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .statement blockquote {
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 300; line-height: 1.5;
+      color: rgba(255,255,255,0.75);
+      border-left: 2px solid var(--blue-light);
+      padding-left: 2rem;
+    }
+    .statement blockquote strong { color: var(--white); font-weight: 600; }
+
+    /* FOOTER */
+    footer {
+      max-width: 960px; margin: 0 auto;
+      padding: 3rem 2.5rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-brand {
+      font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .footer-brand span { color: var(--blue-light); }
+    .footer-note {
+      font-size: 0.75rem; color: rgba(255,255,255,0.2);
+    }
+
+    /* SMOKE ACCENT */
+    .smoke-accent {
+      position: fixed; top: 0; right: 0;
+      width: 50vw; height: 100vh;
+      background: radial-gradient(ellipse at 80% 20%, rgba(26,58,107,0.12) 0%, transparent 60%);
+      pointer-events: none; z-index: 0;
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 1rem 1.25rem; }
+      .hero, .pillars, .statement, footer { padding-left: 1.25rem; padding-right: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="smoke-accent" aria-hidden="true"></div>
+
+  <nav>
+    <a class="nav-logo" href="/">Smoking <span>Tigers</span></a>
+    <div style="display:flex;gap:1.5rem;align-items:center;"><a class="nav-contact" href="/stai">ST:AI Advisory</a><a class="nav-contact" href="/schedule">Schedule a Meeting</a></div>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <p class="hero-eyebrow">Creator-First Media Studio</p>
+      <h1>When tigers<br><em>used to smoke.</em></h1>
+      <p class="hero-sub">
+        We build shows, brands, and systems that work for creators —
+        not platforms. Rooted in autonomy. Built for the long game.
+      </p>
+      <a class="hero-cta" href="mailto:hello@smokingtigers.enterprises">
+        Get in touch
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="pillars">
+      <p class="pillars-label">What we do</p>
+      <div class="pillars-grid">
+        <div class="pillar">
+          <p class="pillar-num">01</p>
+          <h3>Shows &amp; Content</h3>
+          <p>Original creator-led series built around expertise, personality, and real audience relationships.</p>
+        </div>
+        <div class="pillar">
+          <p class="pillar-num">02</p>
+          <h3>Brand &amp; Identity</h3>
+          <p>Visual systems, positioning, and storytelling that help creators stand for something.</p>
+        </div>
+        <div class="pillar">
+          <p class="pillar-num">03</p>
+          <h3>Ops &amp; Infrastructure</h3>
+          <p>The systems, tools, and processes that let small teams move like studios.</p>
+        </div>
+        <div class="pillar">
+          <p class="pillar-num">04</p>
+          <h3>Community</h3>
+          <p>Revenue models and community structures built on contribution — not just consumption.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="statement">
+      <blockquote>
+        "The smoke clears. What remains is <strong>yours</strong>."
+      </blockquote>
+    </section>
+  </main>
+
+  <footer>
+    <p class="footer-brand">Smoking <span>Tigers</span></p>
+    <p class="footer-note">© 2026 Smoking Tigers Media</p>
+  </footer>
+
+</body>
+</html>
