@@ -4,222 +4,361 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SmokingTigers.Enterprises — Professional Services Cooperative</title>
-  <meta name="description" content="A cooperative marketplace connecting expert professionals and organizations with the talent and services to move serious projects forward." />
+  <meta name="description" content="A cooperative of specialists building the infrastructure, media, and governance systems that forward-thinking organizations need." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
   <style>
-    /* ── PAGE-SPECIFIC ── */
+    /* ── FONT SYSTEM ── */
+    :root {
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+    }
+    body { font-family: var(--font-body); }
+    h1, h2, h3, blockquote { font-family: var(--font-display); }
+    .label, .label-muted { font-family: var(--font-body); }
+    .btn { font-family: var(--font-body); }
 
-    /* HERO */
+    /* ── NAV LOGO LOGOTYPE ── */
+    .nav-logo {
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      text-transform: none;
+    }
+    .nav-logo .smoking { color: var(--gold); }
+    .nav-logo .tigers { color: var(--gold); }
+    .nav-logo .domain { margin-left: 0.45em; font-weight: 300; font-size: 0.8em; color: var(--muted); }
+
+    /* ── NAV DROPDOWNS ── */
+    .nav-item {
+      position: relative;
+      display: flex; align-items: center;
+    }
+    .nav-item > .nav-link {
+      display: flex; align-items: center; gap: 0.4rem; cursor: pointer;
+    }
+    .caret {
+      width: 0; height: 0;
+      border-left: 3.5px solid transparent;
+      border-right: 3.5px solid transparent;
+      border-top: 3.5px solid currentColor;
+      opacity: 0.5;
+      transition: transform 0.2s;
+    }
+    .nav-item:hover .caret,
+    .nav-item.open .caret { transform: rotate(180deg); opacity: 1; }
+
+    .dropdown {
+      position: absolute;
+      top: calc(100% + 0.85rem);
+      left: 50%;
+      transform: translateX(-50%) translateY(-8px);
+      min-width: 210px;
+      background: rgba(9, 16, 15, 0.97);
+      border: 1px solid var(--border-mid);
+      border-radius: 8px;
+      padding: 0.4rem 0;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+      z-index: 200;
+      backdrop-filter: blur(20px);
+    }
+    .nav-item:hover .dropdown,
+    .nav-item.open .dropdown {
+      visibility: visible;
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .dropdown a {
+      display: block;
+      padding: 0.55rem 1.25rem;
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.15s, background 0.15s;
+    }
+    .dropdown a:hover { color: var(--white); background: rgba(245,240,232,0.06); }
+
+    /* Hamburger button */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: 4px;
+    }
+    .nav-hamburger span {
+      display: block; width: 22px; height: 1.5px;
+      background: var(--white); transition: all 0.25s;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* ── DIVIDER WITH DIAMOND ── */
+    .divider {
+      position: relative;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-mid), transparent);
+      display: flex; align-items: center; justify-content: center;
+      overflow: visible;
+    }
+    .divider::after {
+      content: '◆';
+      position: absolute;
+      font-size: 0.38rem;
+      color: var(--gold-dim);
+      background: var(--bg);
+      padding: 0 0.6rem;
+      line-height: 1;
+    }
+    /* dividers adjacent to cream sections pick up the cream bg */
+    .divider.cream-after::after { background: var(--cream); }
+    .divider.cream-before::after { background: var(--cream); }
+
+    /* ── GRAIN TEXTURE OVERLAY ── */
+    .hero, .interstitial { position: relative; overflow: hidden; }
+    .hero::before, .interstitial::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0;
+    }
+
+    /* ── WARM LIGHT COLOR SYSTEM ── */
+    :root {
+      --cream:      #eadec1;
+      --cream-2:    #e4d4ae;
+      --cream-text: #2a1e0f;
+      --cream-muted: rgba(42, 30, 15, 0.55);
+    }
+
+    /* ── ADOBE STOCK TEXTURE OVERLAYS ──
+       texture-3 is a warm cream/gold parchment pattern.
+       On light (cream) sections → mix-blend-mode: multiply shows the pattern.
+       On dark sections → mix-blend-mode: screen adds warm luminosity.
+    */
+    .tex-overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none; z-index: 0;
+      background-size: cover; background-position: center;
+      background-repeat: repeat;
+    }
+    /* On LIGHT cream sections — multiply makes the golden pattern visible */
+    .tex-3-light {
+      background-image: url('/assets/texture-3.webp');
+      opacity: 0.55;
+      mix-blend-mode: multiply;
+    }
+    /* On DARK sections — screen adds warm, subtle luminosity */
+    .tex-3-dark {
+      background-image: url('/assets/texture-3.webp');
+      opacity: 0.08;
+      mix-blend-mode: screen;
+    }
+    /* Art Deco — full pattern visible at 45% over dark background */
+    .tex-artdeco {
+      background-image: url('/assets/pattern-artdeco.webp');
+      opacity: 0.45;
+      mix-blend-mode: normal;
+    }
+    /* Chevron — screen blend adds subtle colour wash on dark sections */
+    .tex-chevron {
+      background-image: url('/assets/pattern-chevron.webp');
+      opacity: 0.07;
+      mix-blend-mode: screen;
+    }
+
+    /* ── HERO ── */
     .hero {
       min-height: 100vh;
       display: flex; flex-direction: column; justify-content: center;
       padding: 9rem 3rem 5rem;
       max-width: 1080px; margin: 0 auto;
-      position: relative; z-index: 1;
+      background: linear-gradient(
+        135deg,
+        var(--bg) 0%,
+        rgba(122,31,53,0.06) 40%,
+        rgba(13,40,38,0.08) 70%,
+        var(--bg) 100%
+      );
+      background-size: 300% 300%;
+      animation: ambientShift 14s ease infinite;
     }
+    .hero > *:not(.tex-overlay) { position: relative; z-index: 1; }
     .hero-eyebrow {
       display: flex; align-items: center; gap: 0.75rem;
       margin-bottom: 2rem;
     }
     .hero-eyebrow::before {
-      content: ''; display: block; width: 2.5rem; height: 1px; background: var(--gold);
+      content: ''; display: block; width: 2.5rem; height: 1px; background: rgba(245,240,232,0.2);
     }
     h1 {
-      font-size: clamp(3rem, 7vw, 5.5rem);
-      font-weight: 400; line-height: 1.08;
+      font-size: clamp(3.2rem, 8vw, 6rem);
+      font-weight: 300; line-height: 1.05;
       letter-spacing: -0.01em;
-      margin-bottom: 2rem;
-      max-width: 820px;
+      margin-bottom: 2rem; max-width: 820px;
     }
-    h1 em {
-      font-style: italic;
-      color: var(--gold);
-    }
+    h1 em { font-style: italic; color: inherit; }
     .hero-sub {
-      font-family: 'Inter', system-ui, sans-serif;
-      font-size: 1.05rem;
-      font-weight: 300;
-      line-height: 1.75;
-      color: var(--muted);
-      max-width: 520px;
-      margin-bottom: 3rem;
+      font-family: var(--font-body);
+      font-size: 1rem; font-weight: 300;
+      line-height: 1.8; color: var(--muted);
+      max-width: 500px; margin-bottom: 3rem;
     }
     .hero-actions {
       display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap;
     }
-
-    /* HOW IT WORKS */
-    .how {
-      background: var(--bg-2);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
+    .hero-card {
+      background: rgba(9, 16, 15, 0.82);
+      padding: 3.5rem 4rem;
+      max-width: 720px;
+      border: 1px solid rgba(245,240,232,0.06);
     }
-    .how-inner {
-      max-width: 1080px; margin: 0 auto;
+
+    /* ── INTERSTITIAL — warm cream with texture ── */
+    .interstitial {
+      background: var(--cream);
+      border-top: 1px solid rgba(42,30,15,0.15);
+      border-bottom: 1px solid rgba(42,30,15,0.15);
+      text-align: center;
       padding: 6rem 3rem;
     }
-    .how-header {
-      margin-bottom: 4rem;
+    .interstitial > * { position: relative; z-index: 1; }
+    .interstitial-text {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 3.2vw, 2.7rem);
+      font-weight: 300; line-height: 1.45;
+      max-width: 1100px; margin: 0 auto;
+      color: var(--cream-muted);
+      letter-spacing: 0.01em;
     }
-    .how-header h2 {
-      font-size: clamp(1.8rem, 4vw, 2.8rem);
-      font-weight: 400; line-height: 1.2;
-      margin-top: 1rem;
-    }
-    .sides {
-      display: grid;
-      grid-template-columns: 1fr 80px 1fr;
-      gap: 0;
-      align-items: start;
-    }
-    .side {
-      padding: 2.5rem;
-      border: 1px solid var(--border);
-      background: rgba(9,16,15,0.6);
-    }
-    .side-label {
-      display: inline-block;
-      margin-bottom: 1.5rem;
-    }
-    .side h3 {
-      font-size: 1.5rem;
-      font-weight: 400;
-      margin-bottom: 1rem;
-    }
-    .side p {
-      font-family: 'Inter', system-ui, sans-serif;
-      font-size: 0.9rem;
-      line-height: 1.7;
-      color: var(--muted);
-      margin-bottom: 1.5rem;
-    }
-    .side-list {
-      list-style: none;
-      display: flex; flex-direction: column; gap: 0.6rem;
-    }
-    .side-list li {
-      font-family: 'Inter', system-ui, sans-serif;
-      font-size: 0.82rem;
-      color: var(--muted);
-      display: flex; align-items: baseline; gap: 0.6rem;
-    }
-    .side-list li::before {
-      content: '—';
-      color: var(--gold-dim);
-      flex-shrink: 0;
-    }
-    .sides-connector {
-      display: flex; align-items: center; justify-content: center;
-      padding-top: 5rem;
-    }
-    .connector-icon {
-      width: 40px; height: 40px;
-      border: 1px solid var(--border-mid);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--gold);
-      font-family: 'Inter', system-ui, sans-serif;
-      font-size: 0.7rem;
-      letter-spacing: 0.05em;
+    .interstitial-text em {
+      font-style: italic;
+      color: var(--cream-text);
+      display: block;
+      margin-top: 0.6em;
+      font-size: clamp(2rem, 4.5vw, 3.5rem);
+      line-height: 1.15;
+      letter-spacing: -0.01em;
     }
 
-    /* SERVICES */
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1px;
-      border: 1px solid var(--border);
+    /* ── PILLARS ── */
+    .pillars-grid {
+      display: block;
+      border-top: 1px solid var(--border);
       margin-top: 3rem;
     }
-    .service-card {
-      padding: 2.25rem;
-      background: var(--bg);
-      border: none;
-      transition: background 0.25s;
+    .pillar-card {
+      display: grid;
+      grid-template-columns: 2.5rem 13rem 1fr 10rem;
+      gap: 0 2.5rem;
+      padding: 2.25rem 0;
+      border-bottom: 1px solid var(--border);
+      background: none;
+      align-items: start;
     }
-    .service-card:hover { background: var(--bg-2); }
-    .service-num {
-      font-family: 'Inter', system-ui, sans-serif;
-      font-size: 0.62rem;
-      letter-spacing: 0.18em;
-      color: var(--gold-dim);
+    .pillar-card:hover { background: none; }
+    .pillar-icon {
+      font-family: var(--font-body);
+      font-size: 0.6rem; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--muted);
+      padding-top: 0.25em; margin-bottom: 0;
+    }
+    .pillar-card h3 {
+      font-size: 1.5rem; font-weight: 400; margin-bottom: 0;
+    }
+    .pillar-card > p {
+      font-family: var(--font-body);
+      font-size: 0.85rem; line-height: 1.7; color: var(--muted);
+      margin-bottom: 0;
+    }
+    .pillar-links { display: flex; flex-direction: column; gap: 0.4rem; align-items: flex-end; }
+    .pillar-link {
+      font-family: var(--font-body);
+      font-size: 0.78rem; color: var(--muted);
+      text-decoration: none; transition: color 0.15s; text-align: right;
+    }
+    .pillar-link:hover { color: var(--white); }
+
+    /* ── COOPERATIVE — warm cream with texture ── */
+    .section.cooperative { max-width: none; padding: 0; }
+    .cooperative {
+      background: var(--cream-2);
+      border-top: 1px solid rgba(42,30,15,0.15);
+      border-bottom: 1px solid rgba(42,30,15,0.15);
+      position: relative; overflow: hidden;
+    }
+    .cooperative-inner {
+      max-width: 1080px; margin: 0 auto;
+      padding: 5rem 3rem;
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 4rem; align-items: start;
+    }
+    .cooperative-inner { position: relative; z-index: 1; }
+    .cooperative-label .label-muted { color: var(--cream-muted); }
+    .cooperative-body p {
+      font-family: var(--font-body);
+      font-size: 0.95rem; line-height: 1.8; color: var(--cream-text);
       margin-bottom: 1.25rem;
     }
-    .service-card h3 {
-      font-size: 1.2rem;
-      font-weight: 400;
-      margin-bottom: 0.75rem;
-    }
-    .service-card p {
-      font-family: 'Inter', system-ui, sans-serif;
-      font-size: 0.85rem;
-      line-height: 1.65;
-      color: var(--muted);
-    }
+    .cooperative-body p:last-child { margin-bottom: 0; }
 
-    /* ICP / WHO WE SERVE */
-    .icp {
-      background: var(--bg-2);
-      border-top: 1px solid var(--border);
-    }
-    .icp-inner {
-      max-width: 1080px; margin: 0 auto;
-      padding: 6rem 3rem;
-    }
-    .icp-header { margin-bottom: 3.5rem; }
-    .icp-header h2 {
+    /* ── SERVE ── */
+    .serve h2 {
       font-size: clamp(1.8rem, 4vw, 2.8rem);
-      font-weight: 400;
-      margin-top: 1rem;
+      font-weight: 400; margin-top: 1rem;
     }
-    .icp-grid {
+    .serve-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem; margin-top: 2.5rem;
     }
-    .icp-card {
+    .serve-card {
       padding: 2.25rem;
       border: 1px solid var(--border);
       background: rgba(9,16,15,0.4);
+      display: flex; flex-direction: column;
     }
-    .icp-card h3 {
-      font-size: 1.15rem;
-      font-weight: 400;
-      margin-bottom: 0.75rem;
+    .serve-card h3 { font-size: 1.15rem; font-weight: 400; margin-bottom: 0.75rem; }
+    .serve-card p {
+      font-family: var(--font-body);
+      font-size: 0.85rem; line-height: 1.7; color: var(--muted);
+      margin-bottom: 1.5rem; flex: 1;
     }
-    .icp-card p {
-      font-family: 'Inter', system-ui, sans-serif;
-      font-size: 0.85rem;
-      line-height: 1.65;
-      color: var(--muted);
-    }
+    .btn-sm { font-size: 0.7rem; padding: 0.6rem 1.25rem; }
 
-    /* STATEMENT */
+    /* ── STATEMENT ── */
     .statement-section {
-      max-width: 1080px; margin: 0 auto;
-      padding: 7rem 3rem;
-      text-align: center;
+      position: relative;
+      padding: 12rem 3rem 10rem;
+      overflow: hidden;
     }
+    .statement-section > * { position: relative; z-index: 1; }
     .statement-section blockquote {
-      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
-      font-weight: 400;
-      line-height: 1.45;
-      color: rgba(245,240,232,0.75);
-      max-width: 760px;
-      margin: 0 auto;
+      font-size: clamp(3rem, 5.5vw, 5.5rem);
+      font-weight: 300; line-height: 1.08;
+      letter-spacing: -0.02em;
+      color: rgba(245,240,232,0.82);
+      max-width: none; margin: 0;
     }
     .statement-section blockquote em {
-      font-style: italic;
-      color: var(--white);
+      font-style: italic; color: var(--white);
+      font-size: 1em;
+      display: block; margin-top: 0.12em;
     }
 
-    /* CONTACT / CTA BAND */
+    /* ── CTA BAND ── */
     .cta-band {
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
-      background: linear-gradient(135deg, rgba(122,31,53,0.08) 0%, rgba(13,27,42,0.3) 100%);
+      background: linear-gradient(135deg, rgba(122,31,53,0.1) 0%, rgba(13,27,42,0.4) 100%);
     }
     .cta-inner {
       max-width: 1080px; margin: 0 auto;
@@ -229,25 +368,76 @@
     }
     .cta-text h2 {
       font-size: clamp(1.6rem, 3.5vw, 2.5rem);
-      font-weight: 400;
-      margin-bottom: 0.75rem;
+      font-weight: 400; margin-bottom: 0.75rem;
     }
     .cta-text p {
-      font-family: 'Inter', system-ui, sans-serif;
-      font-size: 0.9rem;
-      color: var(--muted);
-      max-width: 400px;
+      font-family: var(--font-body);
+      font-size: 0.9rem; color: var(--muted); max-width: 400px;
     }
-    .cta-actions {
-      display: flex; flex-direction: column; gap: 1rem; flex-shrink: 0;
+    .cta-actions { display: flex; flex-direction: column; gap: 1rem; flex-shrink: 0; }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .pillar-card:nth-child(2) { transition-delay: 120ms; }
+    .pillar-card:nth-child(3) { transition-delay: 240ms; }
+
+    /* ── AMBIENT HERO ANIMATION ── */
+    @keyframes ambientShift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
+    /* ── STYLE.CSS OVERRIDES — strip gold from shared components ── */
+    .btn-primary { background: var(--white); color: var(--bg); }
+    .btn-primary:hover { background: rgba(245,240,232,0.88); }
+    .nav-link.cta { color: var(--white); border-color: rgba(245,240,232,0.18); }
+    .nav-link.cta:hover { background: rgba(245,240,232,0.06); color: var(--white); }
+    .footer-brand span { color: var(--muted); }
+
+    /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
       .hero { padding: 8rem 1.5rem 4rem; }
-      .how-inner, .icp-inner, .cta-inner, .statement-section { padding-left: 1.5rem; padding-right: 1.5rem; }
-      .sides { grid-template-columns: 1fr; }
-      .sides-connector { padding: 1.5rem 0; transform: rotate(90deg); }
-      .cta-inner { flex-direction: column; }
+      .interstitial { padding: 3.5rem 1.5rem; }
+      .statement-section { padding: 5rem 1.5rem; }
+      .pillar-card { grid-template-columns: 1fr; gap: 0.75rem; padding: 1.75rem 0; }
+      .pillar-links { align-items: flex-start; }
+      .serve-grid { grid-template-columns: 1fr; }
+      .cooperative-inner { grid-template-columns: 1fr; gap: 1.5rem; padding: 3.5rem 1.5rem; }
+      .cta-inner { flex-direction: column; padding: 4rem 1.5rem; }
+
+      .nav-hamburger { display: flex; }
+      .nav-links {
+        display: none;
+        position: fixed; top: 64px; left: 0; right: 0;
+        background: rgba(9,16,15,0.98);
+        backdrop-filter: blur(20px);
+        flex-direction: column; align-items: stretch;
+        padding: 1rem 1.5rem 1.5rem;
+        border-bottom: 1px solid var(--border);
+        gap: 0; z-index: 99;
+      }
+      .nav-links.open { display: flex; }
+      .nav-item { flex-direction: column; align-items: flex-start; width: 100%; }
+      .nav-item > .nav-link { padding: 0.8rem 0; width: 100%; justify-content: space-between; }
+      .dropdown {
+        position: static; transform: none; visibility: visible; opacity: 1;
+        background: none; border: none; border-radius: 0;
+        padding: 0 0 0.75rem 1rem;
+        display: none; transition: none;
+      }
+      .nav-item.open .dropdown { display: block; }
+      .dropdown a { padding: 0.45rem 0; }
+    }
+    @media (max-width: 480px) {
+      h1 { font-size: clamp(2.8rem, 10vw, 3.5rem); }
+      .pillar-card { padding: 1.75rem; }
+      .interstitial-text { font-size: clamp(1.4rem, 5vw, 1.8rem); }
     }
   </style>
 </head>
@@ -256,10 +446,37 @@
   <div class="accent-top" aria-hidden="true"></div>
 
   <nav>
-    <a class="nav-logo" href="/">Smoking<span>Tigers</span>.Enterprises</a>
-    <div class="nav-links">
-      <a class="nav-link" href="/stai">ST:AI</a>
+    <a class="nav-logo" href="/"><span class="smoking">Smoking</span><span class="tigers">Tigers</span><span class="domain">Enterprises</span></a>
+    <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links" role="navigation">
+
+      <div class="nav-item">
+        <a class="nav-link" href="#" aria-haspopup="true" aria-expanded="false">
+          Work With Us <span class="caret" aria-hidden="true"></span>
+        </a>
+        <div class="dropdown" role="menu">
+          <a href="/for-founders" role="menuitem">For Founders</a>
+          <a href="/for-enterprise" role="menuitem">For Enterprise</a>
+          <a href="/contribute" role="menuitem">Contribute as an Expert</a>
+        </div>
+      </div>
+
+      <div class="nav-item">
+        <a class="nav-link" href="#" aria-haspopup="true" aria-expanded="false">
+          Our Offers <span class="caret" aria-hidden="true"></span>
+        </a>
+        <div class="dropdown" role="menu">
+          <a href="/stai" role="menuitem">ST:AI</a>
+          <a href="/media" role="menuitem">Media</a>
+          <a href="/governance" role="menuitem">Governance</a>
+        </div>
+      </div>
+
+      <a class="nav-link" href="/community">Community</a>
       <a class="nav-link cta" href="/schedule">Schedule a Meeting</a>
+
     </div>
   </nav>
 
@@ -267,98 +484,83 @@
 
     <!-- HERO -->
     <section class="hero">
-      <p class="hero-eyebrow">
-        <span class="label">Professional Services Cooperative</span>
-      </p>
-      <h1>Where serious work<br>finds <em>serious talent.</em></h1>
-      <p class="hero-sub">
-        SmokingTigers.Enterprises is a cooperative marketplace. We connect
-        organizations with complex projects to the specialized professionals
-        who can execute them.
-      </p>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="/schedule">
-          Start a Conversation
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </a>
-        <a class="btn btn-outline" href="#how-it-works">How It Works</a>
+      <div class="tex-overlay tex-artdeco" aria-hidden="true"></div>
+      <div class="hero-card">
+        <p class="hero-eyebrow">
+          <span class="label">Professional Services Cooperative</span>
+        </p>
+        <h1>Future<span style="display:inline-block;width:0.32em;height:1.5px;background:currentColor;vertical-align:0.22em;margin:0 0.04em;" aria-hidden="true"></span>forward systems,<br>delivered <em>today.</em></h1>
+        <p class="hero-sub">
+          SmokingTigers.Enterprises is a cooperative of specialists building
+          the infrastructure, media, and governance systems that forward-thinking
+          organizations need — running them ourselves before we build them for you.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="/schedule">
+            Schedule a Meeting
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a class="btn btn-outline" href="#what-is-possible">Explore Our Offers</a>
+        </div>
       </div>
     </section>
 
-    <div class="divider"></div>
+    <div class="divider cream-after"></div>
 
-    <!-- HOW IT WORKS -->
-    <div class="how" id="how-it-works">
-      <div class="how-inner">
-        <div class="how-header">
-          <span class="label-muted">The Model</span>
-          <h2>A marketplace built on two communities.</h2>
-        </div>
-        <div class="sides">
-          <div class="side">
-            <span class="side-label label">For Experts &amp; Professionals</span>
-            <h3>Bring your expertise to meaningful work.</h3>
-            <p>Join a cooperative of skilled professionals — AI engineers, strategists, content producers, technical specialists, and more. Access projects matched to your capabilities.</p>
-            <ul class="side-list">
-              <li>Work on substantive, high-scope engagements</li>
-              <li>Set your own terms and availability</li>
-              <li>Collaborate within a vetted professional network</li>
-              <li>Build a record of completed, credentialed work</li>
-            </ul>
-          </div>
-          <div class="sides-connector">
-            <div class="connector-icon">ST</div>
-          </div>
-          <div class="side">
-            <span class="side-label label">For Organizations &amp; Clients</span>
-            <h3>Access the professionals your project demands.</h3>
-            <p>Whether you're scaling operations, deploying new technology, or executing a complex initiative, we match you with the right team — fast.</p>
-            <ul class="side-list">
-              <li>Scoped and staffed from a curated talent pool</li>
-              <li>From project definition through delivery</li>
-              <li>Enterprise-scale or focused engagements</li>
-              <li>Investor and partnership facilitation available</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- INTERSTITIAL -->
+    <section class="interstitial reveal">
+      <div class="tex-overlay tex-3-light" aria-hidden="true"></div>
+      <p class="interstitial-text">
+        The organizations thriving over the next decade<br>are reinventing how they work.
+        <em>We're making it happen.</em>
+      </p>
+    </section>
 
-    <!-- SERVICES -->
-    <section class="section">
-      <span class="label-muted">What We Facilitate</span>
-      <div class="services-grid">
-        <div class="service-card">
-          <p class="service-num">01</p>
-          <h3>AI &amp; Technical Build</h3>
-          <p>Engineering teams for AI infrastructure, agentic systems, automation, and technical product development.</p>
-        </div>
-        <div class="service-card">
-          <p class="service-num">02</p>
-          <h3>Strategic Advisory</h3>
-          <p>Senior-level counsel on transformation initiatives, market entry, operational redesign, and technology adoption.</p>
-        </div>
-        <div class="service-card">
-          <p class="service-num">03</p>
-          <h3>Content &amp; Communications</h3>
-          <p>Specialized producers, writers, and brand professionals for organizations with high-stakes communication needs.</p>
-        </div>
-        <div class="service-card">
-          <p class="service-num">04</p>
-          <h3>Project Management</h3>
-          <p>End-to-end project coordination — from scoping and team assembly through delivery and investor reporting.</p>
-        </div>
-        <div class="service-card">
-          <p class="service-num">05</p>
-          <h3>Sales &amp; CRM Systems</h3>
-          <p>Salesforce specialists and revenue operations professionals who configure, integrate, and optimize your pipeline infrastructure.</p>
-        </div>
-        <div class="service-card">
-          <p class="service-num">06</p>
-          <h3>Capital &amp; Partnerships</h3>
-          <p>Introductions and facilitation for organizations seeking investment, strategic partners, or joint venture arrangements.</p>
+    <div class="divider cream-before"></div>
+
+    <!-- PILLARS: WHAT'S ALREADY POSSIBLE -->
+    <section class="section pillars" id="what-is-possible">
+      <div class="section-inner">
+        <span class="label-muted">What's Already Possible</span>
+        <div class="pillars-grid">
+
+          <div class="pillar-card reveal">
+            <div class="pillar-icon">01</div>
+            <h3>Work With Us</h3>
+            <p>Organizations and founders with complex, high-stakes projects access our
+            network of specialists — scoped, staffed, and delivered through to completion.</p>
+            <div class="pillar-links">
+              <a href="/for-founders" class="pillar-link">For Founders →</a>
+              <a href="/for-enterprise" class="pillar-link">For Enterprise →</a>
+              <a href="/contribute" class="pillar-link">Contribute as an Expert →</a>
+            </div>
+          </div>
+
+          <div class="pillar-card reveal">
+            <div class="pillar-icon">02</div>
+            <h3>Our Offers</h3>
+            <p>Agentic AI systems, media production and strategy, cooperative governance
+            design. Built from practice, not theory — because we run every system we offer.</p>
+            <div class="pillar-links">
+              <a href="/stai" class="pillar-link">ST:AI →</a>
+              <a href="/media" class="pillar-link">Media →</a>
+              <a href="/governance" class="pillar-link">Governance →</a>
+            </div>
+          </div>
+
+          <div class="pillar-card reveal">
+            <div class="pillar-icon">03</div>
+            <h3>Community</h3>
+            <p>The community of practice around this work is already forming. AI Ops cohorts,
+            agentic AI exploration, and a network of professionals operating at the frontier.
+            Come find your people.</p>
+            <div class="pillar-links">
+              <a href="/community" class="pillar-link">Join the Community →</a>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
@@ -366,42 +568,80 @@
     <div class="divider"></div>
 
     <!-- WHO WE SERVE -->
-    <div class="icp">
-      <div class="icp-inner">
-        <div class="icp-header">
-          <span class="label-muted">Who We Serve</span>
-          <h2>Built for professionals with real work to do.</h2>
-        </div>
-        <div class="icp-grid">
-          <div class="icp-card">
+    <section class="section serve">
+      <div class="section-inner">
+        <span class="label-muted">The Work Ahead</span>
+        <h2>Built for organizations ready to operate differently.</h2>
+        <div class="serve-grid">
+
+          <div class="serve-card reveal">
+            <h3>Growth-Stage Founders</h3>
+            <p>Scaling fast with senior expertise gaps and no appetite for full-time
+            overhead. We scope engagements around your actual needs, staff them from a
+            vetted specialist network, and stay through delivery.</p>
+            <a href="/for-founders" class="btn btn-outline btn-sm">For Founders →</a>
+          </div>
+
+          <div class="serve-card reveal">
+            <h3>SMEs</h3>
+            <p>Established, ambitious, and hitting the ceiling of what current systems
+            can support. We wire in the AI ops, media infrastructure, and governance
+            design that turns a good business into a scalable one.</p>
+            <a href="/for-smes" class="btn btn-outline btn-sm">For SMEs →</a>
+          </div>
+
+          <div class="serve-card reveal">
             <h3>Enterprise Organizations</h3>
-            <p>Large corporations, government contractors, healthcare and pharmaceutical companies, and financial institutions with complex, multi-discipline projects that require specialized external talent.</p>
+            <p>Complex, multi-discipline projects requiring coordinated external talent
+            and proven delivery systems. We build the team, manage the infrastructure,
+            and operate at the scope your project demands.</p>
+            <a href="/for-enterprise" class="btn btn-outline btn-sm">For Enterprise →</a>
           </div>
-          <div class="icp-card">
-            <h3>Growth-Stage Companies</h3>
-            <p>Founders and operators scaling quickly who need access to senior expertise without the overhead of full-time hires. Engagements are scoped, structured, and delivery-oriented.</p>
-          </div>
-          <div class="icp-card">
-            <h3>Independent Experts</h3>
-            <p>Accomplished professionals — engineers, consultants, producers, and specialists — who want to work on well-defined engagements within a cooperative that matches capability to opportunity.</p>
-          </div>
+
         </div>
       </div>
-    </div>
+    </section>
+
+    <div class="divider"></div>
 
     <!-- STATEMENT -->
     <section class="statement-section">
-      <blockquote>
-        "We don't place people into roles. We build teams around outcomes — and we stay until the work is <em>done.</em>"
+      <div class="tex-overlay tex-chevron" aria-hidden="true"></div>
+      <blockquote class="reveal">
+        The future of work is already operational.<br>
+        <em>Welcome.</em>
       </blockquote>
     </section>
+
+    <div class="divider cream-after"></div>
+
+    <!-- COOPERATIVE CALLOUT -->
+    <section class="section cooperative">
+      <div class="cooperative-inner">
+        <div class="cooperative-label">
+          <span class="label-muted">How We're Built</span>
+        </div>
+        <div class="cooperative-body reveal">
+          <p>SmokingTigers.Enterprises runs as a cooperative. Contributors are partners
+          with a stake in outcomes, not vendors on a roster. Revenue flows to the people
+          doing the work. Every engagement is governed by the same principles we help our
+          clients build into their own organizations.</p>
+          <p>This model attracts a specific kind of professional and a specific kind of
+          client. The ones who know that how the work gets done matters as much as whether
+          it gets done.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider cream-before"></div>
 
     <!-- CTA BAND -->
     <div class="cta-band">
       <div class="cta-inner">
         <div class="cta-text">
-          <h2>Ready to move your project forward?</h2>
-          <p>Tell us what you're working on. We'll identify the right professionals and outline a path to engagement within 48 hours.</p>
+          <h2>Ready to operate at the frontier?</h2>
+          <p>Tell us what you're building. We'll identify the right team and outline
+          a path to engagement within 48 hours.</p>
         </div>
         <div class="cta-actions">
           <a class="btn btn-primary" href="/schedule">
@@ -421,6 +661,51 @@
     <p class="footer-brand">Smoking<span>Tigers</span>.Enterprises</p>
     <p class="footer-note">© 2026 SmokingTigers.Enterprises. All rights reserved.</p>
   </footer>
+
+  <script>
+    // Scroll-triggered reveal
+    const revealObserver = new IntersectionObserver(
+      (entries) => entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          revealObserver.unobserve(e.target);
+        }
+      }),
+      { threshold: 0.15 }
+    );
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    // Nav hamburger
+    const hamburger = document.querySelector('.nav-hamburger');
+    const navLinks  = document.getElementById('nav-links');
+    hamburger.addEventListener('click', () => {
+      const open = hamburger.classList.toggle('open');
+      navLinks.classList.toggle('open', open);
+      hamburger.setAttribute('aria-expanded', String(open));
+    });
+
+    // Dropdown tap-to-toggle on mobile
+    document.querySelectorAll('.nav-item').forEach(item => {
+      const trigger = item.querySelector(':scope > .nav-link[aria-haspopup]');
+      if (!trigger) return;
+      trigger.addEventListener('click', e => {
+        if (window.innerWidth <= 768) {
+          e.preventDefault();
+          const open = item.classList.toggle('open');
+          trigger.setAttribute('aria-expanded', String(open));
+        }
+      });
+    });
+
+    // Close everything on outside click
+    document.addEventListener('click', e => {
+      if (!e.target.closest('nav')) {
+        navLinks.classList.remove('open');
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+      }
+    });
+  </script>
 
 </body>
 </html>
