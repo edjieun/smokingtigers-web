@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For SMEs — SmokingTigers.Enterprises</title>
+  <meta name="description" content="ST:AI partners with established organizations to implement agentic AI systems and develop the internal capability to run them." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    /* ── FONT SYSTEM ── */
+    :root {
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+    }
+    body { font-family: var(--font-body); }
+    h1, h2, h3 { font-family: var(--font-display); }
+    .label, .label-muted { font-family: var(--font-body); font-size: 0.71rem; }
+    .btn { font-family: var(--font-body); }
+
+    /* ── NAV LOGO ── */
+    .nav-logo {
+      font-family: var(--font-body);
+      font-size: 0.9rem; font-weight: 400;
+      letter-spacing: 0.01em; text-transform: none;
+    }
+    .nav-logo .smoking { color: var(--gold); }
+    .nav-logo .tigers  { color: var(--gold); }
+    .nav-logo .domain  { margin-left: 0.45em; font-weight: 300; font-size: 0.8em; color: var(--muted); }
+
+    /* ── NAV DROPDOWNS ── */
+    .nav-item { position: relative; display: flex; align-items: center; }
+    .nav-item > .nav-link { display: flex; align-items: center; gap: 0.4rem; cursor: pointer; }
+    .caret {
+      width: 0; height: 0;
+      border-left: 3.5px solid transparent;
+      border-right: 3.5px solid transparent;
+      border-top: 3.5px solid currentColor;
+      opacity: 0.5; transition: transform 0.2s;
+    }
+    .nav-item:hover .caret,
+    .nav-item.open .caret { transform: rotate(180deg); opacity: 1; }
+    .dropdown {
+      position: absolute; top: calc(100% + 0.85rem); left: 50%;
+      transform: translateX(-50%) translateY(-8px);
+      min-width: 210px;
+      background: rgba(9,16,15,0.97);
+      border: 1px solid var(--border-mid); border-radius: 8px;
+      padding: 0.4rem 0; visibility: hidden; opacity: 0;
+      transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+      z-index: 200; backdrop-filter: blur(20px);
+    }
+    .nav-item:hover .dropdown,
+    .nav-item.open .dropdown { visibility: visible; opacity: 1; transform: translateX(-50%) translateY(0); }
+    .dropdown a {
+      display: block; padding: 0.55rem 1.25rem;
+      font-family: var(--font-body); font-size: 0.78rem;
+      color: var(--muted); text-decoration: none; letter-spacing: 0.02em;
+      transition: color 0.15s, background 0.15s;
+    }
+    .dropdown a:hover { color: var(--white); background: rgba(245,240,232,0.06); }
+    .nav-item.active > .nav-link { color: var(--white); }
+    .nav-hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: 4px;
+    }
+    .nav-hamburger span { display: block; width: 22px; height: 1.5px; background: var(--white); transition: all 0.25s; }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* ── STYLE.CSS OVERRIDES ── */
+    .btn-primary { background: var(--white); color: var(--bg); }
+    .btn-primary:hover { background: rgba(245,240,232,0.88); }
+    .nav-link.cta { color: var(--white); border-color: rgba(245,240,232,0.18); }
+    .nav-link.cta:hover { background: rgba(245,240,232,0.06); color: var(--white); }
+    .footer-brand span { color: var(--muted); }
+
+    /* ── AUDIENCE HERO ── */
+    .audience-hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 9rem 3rem 5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .audience-hero-inner {
+      max-width: 1080px; margin: 0 auto; width: 100%;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 5rem; align-items: center;
+    }
+    .audience-hero-copy .hero-eyebrow {
+      display: flex; align-items: center; gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .audience-hero-copy h1 {
+      font-size: clamp(2.8rem, 6vw, 4.8rem);
+      font-weight: 300; line-height: 1.08;
+      letter-spacing: -0.01em; margin-bottom: 1.75rem;
+    }
+    .audience-hero-copy h1 em { font-style: italic; color: var(--gold); }
+    .audience-hero-copy .hero-sub {
+      font-size: 1.05rem; font-weight: 300;
+      line-height: 1.8; color: var(--muted);
+      letter-spacing: 0.02em;
+      margin-bottom: 2.5rem; max-width: 440px;
+    }
+    .hero-actions { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; }
+    .audience-hero-visual {
+      display: flex; flex-direction: column; gap: 1rem;
+      padding: 1.75rem;
+      border: 1px solid var(--border);
+      background: rgba(9,16,15,0.6);
+    }
+    .diagram-label-row {
+      display: flex; align-items: center;
+      justify-content: space-between; margin-bottom: 0.25rem;
+    }
+    .diagram-state-label {
+      font-family: var(--font-body); font-size: 0.62rem;
+      letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-dim);
+    }
+    .diagram-arrow { color: var(--border-mid); font-size: 0.9rem; }
+
+    /* SVG line-draw animation */
+    @keyframes drawLine {
+      from { stroke-dashoffset: 1; }
+      to   { stroke-dashoffset: 0; }
+    }
+
+    /* ── REFRAME ── */
+    .reframe {
+      background: var(--bg-2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 6rem 3rem;
+    }
+    .reframe-inner {
+      max-width: 1080px; margin: 0 auto;
+      display: grid; grid-template-columns: 220px 1fr;
+      gap: 4rem; align-items: start;
+    }
+    .reframe-body h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 300; line-height: 1.2; margin-bottom: 2rem;
+    }
+    .reframe-body p {
+      font-size: 1rem; line-height: 1.8;
+      color: var(--muted); letter-spacing: 0.02em;
+      margin-bottom: 1.25rem; max-width: 580px;
+    }
+    .reframe-body p:last-child { margin-bottom: 0; }
+
+    /* ── PHASES ── */
+    .phases .section-inner { max-width: 1080px; margin: 0 auto; padding: 6rem 3rem; }
+    .phases h2 {
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 300; line-height: 1.25; margin: 1rem 0 3.5rem;
+    }
+    .phases-track { position: relative; }
+    .phases-line {
+      position: absolute; top: 1.1rem; left: 1.1rem; right: 1.1rem;
+      height: 1px; background: var(--border); z-index: 0;
+    }
+    .phases-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 3rem; position: relative; z-index: 1;
+    }
+    .phase-item { display: flex; flex-direction: column; gap: 1rem; }
+    .phase-num {
+      width: 2.2rem; height: 2.2rem;
+      border: 1px solid var(--border-mid); background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-body); font-size: 0.6rem;
+      letter-spacing: 0.15em; color: var(--gold); flex-shrink: 0;
+    }
+    .phase-item h3 { font-size: 1.3rem; font-weight: 400; line-height: 1.3; }
+    .phase-item p {
+      font-size: 0.9rem; line-height: 1.7;
+      color: var(--muted); letter-spacing: 0.02em;
+    }
+    .phase-detail {
+      font-size: 0.72rem !important; letter-spacing: 0.08em;
+      color: var(--gold-dim) !important; text-transform: uppercase;
+      margin-top: 0.5rem;
+    }
+
+    /* ── WHO FOR ── */
+    .who-for {
+      background: var(--bg-2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 6rem 3rem;
+    }
+    .who-for-inner {
+      max-width: 1080px; margin: 0 auto;
+      display: grid; grid-template-columns: 220px 1fr;
+      gap: 4rem; align-items: start;
+    }
+    .who-for-body h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 300; line-height: 1.2; margin-bottom: 2rem;
+    }
+    .who-for-body p {
+      font-size: 1rem; line-height: 1.8;
+      color: var(--muted); letter-spacing: 0.02em;
+      margin-bottom: 1.25rem; max-width: 580px;
+    }
+    .who-for-body p:last-child { margin-bottom: 0; }
+
+    /* ── OUTCOMES ── */
+    .outcomes { padding: 7rem 3rem; border-bottom: 1px solid var(--border); }
+    .outcomes-inner { max-width: 1080px; margin: 0 auto; }
+    .outcomes-list { margin-top: 3rem; display: flex; flex-direction: column; }
+    .outcome-item {
+      display: grid; grid-template-columns: 2rem 1fr;
+      gap: 1.5rem; align-items: baseline;
+      padding: 2.5rem 0; border-bottom: 1px solid var(--border);
+    }
+    .outcome-item:first-child { border-top: 1px solid var(--border); }
+    .outcome-num { color: var(--gold-dim); font-family: var(--font-body); font-size: 1rem; line-height: 1; }
+    .outcome-statement {
+      font-size: clamp(1.4rem, 2.2vw, 2rem);
+      font-weight: 300; line-height: 1.3;
+      color: rgba(245,240,232,0.8);
+    }
+    .outcome-statement em { font-style: italic; color: var(--white); }
+
+    /* ── COOPERATIVE ── */
+    .cooperative {
+      background: var(--bg-2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .cooperative-inner {
+      max-width: 1080px; margin: 0 auto;
+      padding: 5rem 3rem;
+      display: grid; grid-template-columns: 200px 1fr;
+      gap: 4rem; align-items: start;
+    }
+    .cooperative-body p {
+      font-size: 1rem; line-height: 1.8;
+      color: var(--muted); letter-spacing: 0.02em;
+      margin-bottom: 1.25rem;
+    }
+    .cooperative-body p:last-child { margin-bottom: 0; }
+
+    /* ── CTA BAND ── */
+    .cta-band {
+      border-top: 1px solid var(--border);
+      background: linear-gradient(135deg, rgba(122,31,53,0.1) 0%, rgba(13,27,42,0.4) 100%);
+    }
+    .cta-inner {
+      max-width: 1080px; margin: 0 auto; padding: 6rem 3rem;
+      display: flex; justify-content: space-between;
+      align-items: center; gap: 3rem; flex-wrap: wrap;
+    }
+    .cta-text h2 {
+      font-size: clamp(1.6rem, 3.5vw, 2.5rem);
+      font-weight: 400; margin-bottom: 0.75rem;
+    }
+    .cta-text p {
+      font-size: 0.95rem; color: var(--muted);
+      letter-spacing: 0.02em; max-width: 400px;
+    }
+    .cta-actions { display: flex; flex-direction: column; gap: 1rem; flex-shrink: 0; }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.55s ease, transform 0.55s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .phase-item:nth-child(2) { transition-delay: 100ms; }
+    .phase-item:nth-child(3) { transition-delay: 200ms; }
+    .outcome-item:nth-child(2) { transition-delay: 80ms; }
+    .outcome-item:nth-child(3) { transition-delay: 160ms; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .audience-hero { padding: 8rem 1.5rem 4rem; }
+      .audience-hero-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .reframe { padding: 4rem 1.5rem; }
+      .reframe-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .phases .section-inner { padding: 4rem 1.5rem; }
+      .phases-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .phases-line { display: none; }
+      .who-for { padding: 4rem 1.5rem; }
+      .who-for-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .outcomes { padding: 4rem 1.5rem; }
+      .outcome-item { grid-template-columns: 1.5rem 1fr; gap: 1rem; }
+      .cooperative-inner { grid-template-columns: 1fr; gap: 1.5rem; padding: 3.5rem 1.5rem; }
+      .cta-inner { flex-direction: column; padding: 4rem 1.5rem; }
+      .nav-hamburger { display: flex; }
+      .nav-links {
+        display: none; position: fixed; top: 64px; left: 0; right: 0;
+        background: rgba(9,16,15,0.98); backdrop-filter: blur(20px);
+        flex-direction: column; align-items: stretch;
+        padding: 1rem 1.5rem 1.5rem;
+        border-bottom: 1px solid var(--border);
+        gap: 0; z-index: 99;
+      }
+      .nav-links.open { display: flex; }
+      .nav-item { flex-direction: column; align-items: flex-start; width: 100%; }
+      .nav-item > .nav-link { padding: 0.8rem 0; width: 100%; justify-content: space-between; }
+      .dropdown {
+        position: static; transform: none; visibility: visible; opacity: 1;
+        background: none; border: none; border-radius: 0;
+        padding: 0 0 0.75rem 1rem; display: none; transition: none;
+      }
+      .nav-item.open .dropdown { display: block; }
+      .dropdown a { padding: 0.45rem 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="accent-top" aria-hidden="true"></div>
+
+  <nav>
+    <a class="nav-logo" href="/"><span class="smoking">Smoking</span><span class="tigers">Tigers</span><span class="domain">Enterprises</span></a>
+    <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links" role="navigation">
+
+      <div class="nav-item active">
+        <a class="nav-link" href="#" aria-haspopup="true" aria-expanded="false">
+          Work With Us <span class="caret" aria-hidden="true"></span>
+        </a>
+        <div class="dropdown" role="menu">
+          <a href="/for-founders" role="menuitem">For Founders</a>
+          <a href="/for-enterprise" role="menuitem">For Enterprise</a>
+          <a href="/contribute" role="menuitem">Contribute as an Expert</a>
+        </div>
+      </div>
+
+      <div class="nav-item">
+        <a class="nav-link" href="#" aria-haspopup="true" aria-expanded="false">
+          Our Offers <span class="caret" aria-hidden="true"></span>
+        </a>
+        <div class="dropdown" role="menu">
+          <a href="/stai" role="menuitem">ST:AI</a>
+          <a href="/media" role="menuitem">Media</a>
+          <a href="/governance" role="menuitem">Governance</a>
+        </div>
+      </div>
+
+      <a class="nav-link" href="/community">Community</a>
+      <a class="nav-link cta" href="/schedule">Schedule a Meeting</a>
+
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- SECTION 1: SPLIT HERO -->
+    <section class="audience-hero">
+      <div class="audience-hero-inner">
+
+        <!-- Left: Copy -->
+        <div class="audience-hero-copy">
+          <p class="hero-eyebrow">
+            <span class="label">For Growing Organizations</span>
+          </p>
+          <h1>Agentic transformation,<br>built to <em>last.</em></h1>
+          <p class="hero-sub">
+            ST:AI partners with established organizations to redesign how work
+            gets done — implementing agentic AI systems and developing the
+            internal capability to run them. When the engagement ends, your
+            organization operates differently. And someone on your team knows
+            exactly how to keep it that way.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="/schedule">
+              Schedule a Conversation
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+            <a class="btn btn-outline" href="/stai">See Our Offers</a>
+          </div>
+        </div>
+
+        <!-- Right: Before/After SVG Diagram -->
+        <div class="audience-hero-visual">
+          <div class="diagram-label-row">
+            <span class="diagram-state-label">Current State</span>
+            <span class="diagram-arrow">→</span>
+            <span class="diagram-state-label">Transformed</span>
+          </div>
+
+          <svg viewBox="0 0 400 272" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg"
+               role="img" aria-label="Diagram: scattered tools become a coordinated AI Ops Layer">
+
+            <!-- ═══ LEFT SIDE: CURRENT STATE ═══ -->
+
+            <!-- Dashed connections (behind nodes) — sparse, suggesting disconnection -->
+            <line x1="82" y1="41" x2="108" y2="60"  stroke="rgba(122,140,136,0.20)" stroke-width="0.75" stroke-dasharray="3,4"/>
+            <line x1="50" y1="51" x2="44" y2="112"  stroke="rgba(122,140,136,0.16)" stroke-width="0.75" stroke-dasharray="3,4"/>
+            <line x1="136" y1="70" x2="128" y2="132" stroke="rgba(122,140,136,0.16)" stroke-width="0.75" stroke-dasharray="3,4"/>
+            <line x1="96"  y1="145" x2="74" y2="202" stroke="rgba(122,140,136,0.16)" stroke-width="0.75" stroke-dasharray="3,4"/>
+            <line x1="38"  y1="124" x2="52" y2="200" stroke="rgba(122,140,136,0.10)" stroke-width="0.75" stroke-dasharray="2,5"/>
+
+            <!-- Left nodes -->
+            <rect x="16"  y="29"  width="66" height="20" rx="2" fill="rgba(122,140,136,0.07)" stroke="rgba(122,140,136,0.30)" stroke-width="0.75"/>
+            <text x="49"  y="43"  text-anchor="middle" font-family="DM Sans,system-ui,sans-serif" font-size="8" fill="rgba(122,140,136,0.68)">Gmail</text>
+
+            <rect x="98"  y="50"  width="78" height="20" rx="2" fill="rgba(122,140,136,0.07)" stroke="rgba(122,140,136,0.30)" stroke-width="0.75"/>
+            <text x="137" y="64"  text-anchor="middle" font-family="DM Sans,system-ui,sans-serif" font-size="8" fill="rgba(122,140,136,0.68)">Spreadsheets</text>
+
+            <rect x="10"  y="104" width="80" height="20" rx="2" fill="rgba(122,140,136,0.07)" stroke="rgba(122,140,136,0.30)" stroke-width="0.75"/>
+            <text x="50"  y="118" text-anchor="middle" font-family="DM Sans,system-ui,sans-serif" font-size="8" fill="rgba(122,140,136,0.68)">Manual Coord.</text>
+
+            <rect x="96"  y="132" width="80" height="20" rx="2" fill="rgba(122,140,136,0.07)" stroke="rgba(122,140,136,0.30)" stroke-width="0.75"/>
+            <text x="136" y="146" text-anchor="middle" font-family="DM Sans,system-ui,sans-serif" font-size="8" fill="rgba(122,140,136,0.68)">Scattered SaaS</text>
+
+            <rect x="18"  y="192" width="84" height="20" rx="2" fill="rgba(122,140,136,0.07)" stroke="rgba(122,140,136,0.30)" stroke-width="0.75"/>
+            <text x="60"  y="206" text-anchor="middle" font-family="DM Sans,system-ui,sans-serif" font-size="8" fill="rgba(122,140,136,0.68)">Ad-hoc Decisions</text>
+
+            <!-- ═══ CENTER DIVIDER ═══ -->
+            <line x1="200" y1="6" x2="200" y2="266" stroke="rgba(255,255,255,0.07)" stroke-width="0.5"/>
+
+            <!-- ═══ RIGHT SIDE: TRANSFORMED ═══ -->
+
+            <!-- Hub: AI Ops Layer -->
+            <rect x="274" y="111" width="68" height="34" rx="3.5" fill="rgba(201,168,76,0.09)" stroke="#c9a84c" stroke-width="1"/>
+            <text x="308" y="125" text-anchor="middle" font-family="DM Sans,system-ui,sans-serif" font-size="8" fill="#c9a84c">AI Ops</text>
+            <text x="308" y="137" text-anchor="middle" font-family="DM Sans,system-ui,sans-serif" font-size="8" fill="#c9a84c">Layer</text>
+
+            <!-- AI Ops Manager — gold, off to side -->
+            <rect x="348" y="53" width="46" height="28" rx="3" fill="rgba(201,168,76,0.12)" stroke="rgba(201,168,76,0.60)" stroke-width="0.75"/>
+            <text x="371" y="65"  text-anchor="middle" font-family="DM Sans,system-ui,sans-serif" font-size="7.5" fill="rgba(201,168,76,0.88)">AI Ops</text>
+            <text x="371" y="75"  text-anchor="middle" font-family="DM Sans,system-ui,sans-serif" font-size="7.5" fill="rgba(201,168,76,0.88)">Manager</text>
+
+            <!-- Right peripheral nodes -->
+            <rect x="212" y="26"  width="52" height="20" rx="2" fill="rgba(245,240,232,0.04)" stroke="rgba(245,240,232,0.28)" stroke-width="0.75"/>
+            <text x="238" y="40"  text-anchor="middle" font-family="DM Sans,system-ui,sans-serif" font-size="8" fill="rgba(245,240,232,0.60)">Gmail</text>
+
+            <rect x="210" y="62"  width="58" height="20" rx="2" fill="rgba(245,240,232,0.04)" stroke="rgba(245,240,232,0.28)" stroke-width="0.75"/>
+            <text x="239" y="76"  text-anchor="middle" font-family="DM Sans,system-ui,sans-serif" font-size="8" fill="rgba(245,240,232,0.60)">Spreadsheets</text>
+
+            <rect x="210" y="118" width="58" height="20" rx="2" fill="rgba(245,240,232,0.04)" stroke="rgba(245,240,232,0.28)" stroke-width="0.75"/>
+            <text x="239" y="132" text-anchor="middle" font-family="DM Sans,system-ui,sans-serif" font-size="8" fill="rgba(245,240,232,0.60)">Manual Coord.</text>
+
+            <rect x="210" y="166" width="58" height="20" rx="2" fill="rgba(245,240,232,0.04)" stroke="rgba(245,240,232,0.28)" stroke-width="0.75"/>
+            <text x="239" y="180" text-anchor="middle" font-family="DM Sans,system-ui,sans-serif" font-size="8" fill="rgba(245,240,232,0.60)">Scattered SaaS</text>
+
+            <rect x="210" y="212" width="58" height="20" rx="2" fill="rgba(245,240,232,0.04)" stroke="rgba(245,240,232,0.28)" stroke-width="0.75"/>
+            <text x="239" y="226" text-anchor="middle" font-family="DM Sans,system-ui,sans-serif" font-size="8" fill="rgba(245,240,232,0.60)">Ad-hoc Decisions</text>
+
+            <!-- Animated connection lines: nodes → hub -->
+            <!-- Gmail (264, 36) → Hub left (274, 121) -->
+            <line x1="264" y1="36"  x2="274" y2="121" stroke="rgba(245,240,232,0.25)" stroke-width="0.75"
+                  pathLength="1" style="stroke-dasharray:1;stroke-dashoffset:1;animation:drawLine 0.4s 0.05s ease forwards"/>
+            <!-- Spreadsheets (268, 72) → Hub left (274, 125) -->
+            <line x1="268" y1="72"  x2="274" y2="125" stroke="rgba(245,240,232,0.25)" stroke-width="0.75"
+                  pathLength="1" style="stroke-dasharray:1;stroke-dashoffset:1;animation:drawLine 0.4s 0.18s ease forwards"/>
+            <!-- Manual Coord. (268, 128) → Hub left (274, 128) — horizontal -->
+            <line x1="268" y1="128" x2="274" y2="128" stroke="rgba(245,240,232,0.25)" stroke-width="0.75"
+                  pathLength="1" style="stroke-dasharray:1;stroke-dashoffset:1;animation:drawLine 0.4s 0.31s ease forwards"/>
+            <!-- Scattered SaaS (268, 176) → Hub left (274, 132) -->
+            <line x1="268" y1="176" x2="274" y2="132" stroke="rgba(245,240,232,0.25)" stroke-width="0.75"
+                  pathLength="1" style="stroke-dasharray:1;stroke-dashoffset:1;animation:drawLine 0.4s 0.44s ease forwards"/>
+            <!-- Ad-hoc (268, 222) → Hub left (278, 138) -->
+            <line x1="268" y1="222" x2="278" y2="138" stroke="rgba(245,240,232,0.25)" stroke-width="0.75"
+                  pathLength="1" style="stroke-dasharray:1;stroke-dashoffset:1;animation:drawLine 0.4s 0.57s ease forwards"/>
+            <!-- Hub top-right (332, 117) → AI Ops Manager bottom (362, 81) — gold -->
+            <line x1="332" y1="117" x2="362" y2="81"  stroke="rgba(201,168,76,0.48)" stroke-width="0.75"
+                  pathLength="1" style="stroke-dasharray:1;stroke-dashoffset:1;animation:drawLine 0.4s 0.72s ease forwards"/>
+
+          </svg>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 2: THE REFRAME -->
+    <section class="reframe">
+      <div class="reframe-inner">
+        <div class="reframe-label">
+          <span class="label-muted">The Transformation</span>
+        </div>
+        <div class="reframe-body reveal">
+          <h2>More than implementation.<br>A new operating model.</h2>
+          <p>
+            Most AI vendors build something, hand it over, and leave. Six months
+            later the system sits unused because no one inside the organization
+            knows how to run it, adapt it, or trust it.
+          </p>
+          <p>
+            ST:AI works differently. Every engagement includes developing an
+            internal AI Ops Manager — someone already on your team who becomes
+            the ongoing steward of your new systems. They learn alongside the
+            build. They own it when we step back.
+          </p>
+          <p>
+            The result is an organization with a new operational layer and the
+            internal capability to evolve it. That's what transformation
+            actually looks like.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: HOW WE WORK -->
+    <section class="section phases">
+      <div class="section-inner">
+        <span class="label-muted">How We Work</span>
+        <h2>A structured path from current state<br>to operational future.</h2>
+        <div class="phases-track">
+          <div class="phases-line" aria-hidden="true"></div>
+          <div class="phases-grid">
+
+            <div class="phase-item reveal">
+              <div class="phase-num">01</div>
+              <h3>Baseline Sprint</h3>
+              <p>We map how your organization actually works — the tools, the
+              workflows, the handoffs, the gaps. Thirty days of structured
+              discovery produces a clear picture of where agentic systems will
+              deliver the most value, fast.</p>
+              <p class="phase-detail">Duration: 30 days</p>
+            </div>
+
+            <div class="phase-item reveal">
+              <div class="phase-num">02</div>
+              <h3>Build and Activate</h3>
+              <p>We design and implement the agent infrastructure specific to
+              your operation. Coordination, communication, contract management,
+              reporting, follow-up — the functions consuming your team's time
+              become automated, auditable, and scalable.</p>
+              <p class="phase-detail">Duration: 60–90 days</p>
+            </div>
+
+            <div class="phase-item reveal">
+              <div class="phase-num">03</div>
+              <h3>Capability Transfer</h3>
+              <p>Your designated AI Ops Manager trains alongside the build.
+              By the time we step back, they have the knowledge, the
+              documentation, and the confidence to run, adapt, and extend
+              the system independently.</p>
+              <p class="phase-detail">Outcome: ongoing internal ownership</p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: WHO THIS IS FOR -->
+    <section class="who-for">
+      <div class="who-for-inner reveal">
+        <div class="who-for-label">
+          <span class="label-muted">The Right Fit</span>
+        </div>
+        <div class="who-for-body">
+          <h2>Built for organizations ready<br>to operate differently.</h2>
+          <p>
+            This engagement is built for established organizations — typically
+            10 to 200 people — with real operational complexity and the
+            readiness to invest in solving it properly.
+          </p>
+          <p>
+            You've outgrown your current systems. You're managing too many tools
+            that don't talk to each other, too much coordination happening
+            manually, and too many decisions that depend on one or two people
+            knowing where everything lives.
+          </p>
+          <p>
+            You're ready for a managed transformation with a clear outcome: a
+            leaner, smarter operation and someone on your team who knows how
+            to run it.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: WHAT CHANGES -->
+    <section class="outcomes">
+      <div class="outcomes-inner">
+        <span class="label-muted">The Outcome</span>
+        <div class="outcomes-list">
+
+          <div class="outcome-item reveal">
+            <span class="outcome-num">—</span>
+            <p class="outcome-statement">
+              Your coordination layer runs on <em>agents,</em> not people.
+            </p>
+          </div>
+
+          <div class="outcome-item reveal">
+            <span class="outcome-num">—</span>
+            <p class="outcome-statement">
+              Your team focuses on the work <em>only humans</em> can do.
+            </p>
+          </div>
+
+          <div class="outcome-item reveal">
+            <span class="outcome-num">—</span>
+            <p class="outcome-statement">
+              Your AI Ops Manager keeps the whole system <em>moving.</em>
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 6: COOPERATIVE CALLOUT -->
+    <section class="cooperative">
+      <div class="cooperative-inner reveal">
+        <div class="cooperative-label">
+          <span class="label-muted">How We're Built</span>
+        </div>
+        <div class="cooperative-body">
+          <p>
+            ST:AI operates as part of the SmokingTigers.Enterprises cooperative.
+            The specialists who work on your transformation have a stake in the
+            outcome — contributors are partners, not vendors. That's why we stay
+            until the system works, and why we build capability transfer into
+            every engagement by default.
+          </p>
+          <p>
+            This model attracts a specific kind of professional and a specific
+            kind of client. The ones who know that how the work gets done matters
+            as much as whether it gets done.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 7: CTA BAND -->
+    <div class="cta-band">
+      <div class="cta-inner">
+        <div class="cta-text">
+          <h2>Ready to transform how your organization operates?</h2>
+          <p>Tell us where you are and what's breaking. We'll outline a path
+          to transformation and introduce you to the right team within 48 hours.</p>
+        </div>
+        <div class="cta-actions">
+          <a class="btn btn-primary" href="/schedule">
+            Schedule a Conversation
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a class="btn btn-outline" href="mailto:hello@smokingtigers.enterprises">
+            Send an Inquiry
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p class="footer-brand">Smoking<span>Tigers</span>.Enterprises</p>
+    <p class="footer-note">© 2026 SmokingTigers.Enterprises. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const observer = new IntersectionObserver(
+      (entries) => entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+      }),
+      { threshold: 0.12 }
+    );
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Nav hamburger
+    const hamburger = document.querySelector('.nav-hamburger');
+    const navLinks  = document.getElementById('nav-links');
+    hamburger.addEventListener('click', () => {
+      const open = hamburger.classList.toggle('open');
+      navLinks.classList.toggle('open', open);
+      hamburger.setAttribute('aria-expanded', String(open));
+    });
+
+    // Dropdown tap-to-toggle on mobile
+    document.querySelectorAll('.nav-item').forEach(item => {
+      const trigger = item.querySelector(':scope > .nav-link[aria-haspopup]');
+      if (!trigger) return;
+      trigger.addEventListener('click', e => {
+        if (window.innerWidth <= 768) {
+          e.preventDefault();
+          const open = item.classList.toggle('open');
+          trigger.setAttribute('aria-expanded', String(open));
+        }
+      });
+    });
+
+    // Close on outside click
+    document.addEventListener('click', e => {
+      if (!e.target.closest('nav')) {
+        document.querySelectorAll('.nav-item.open').forEach(item => {
+          item.classList.remove('open');
+          const t = item.querySelector('[aria-haspopup]');
+          if (t) t.setAttribute('aria-expanded', 'false');
+        });
+        if (navLinks.classList.contains('open')) {
+          navLinks.classList.remove('open');
+          hamburger.classList.remove('open');
+          hamburger.setAttribute('aria-expanded', 'false');
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
