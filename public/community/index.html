@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Community — SmokingTigers.Enterprises</title>
+  <meta name="description" content="A community built for AI Ops Managers - the people who carry the relationship between AI systems and the organizations they serve." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:        #f5f0e8;
+      --ink-mid:    rgba(245,240,232,0.45);
+      --ink-dim:    rgba(245,240,232,0.32);
+      --paper:      #09100f;
+      --surface:    #0f1a18;
+      --surface-2:  rgba(245,240,232,0.035);
+      --gold:       #c9a84c;
+      --gold-lt:    #dfc06a;
+      --gold-dim:   rgba(201,168,76,0.3);
+      --gold-trace: rgba(201,168,76,0.07);
+      --line:       rgba(201,168,76,0.18);
+      --line-blue:  rgba(245,240,232,0.10);
+      --max:        1080px;
+      --serif:      'Cormorant Garamond', Georgia, serif;
+      --sans:       'DM Sans', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--sans); background: var(--paper); color: var(--ink); line-height: 1.6; font-size: 16px; font-weight: 300; letter-spacing: 0.015em; }
+
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 0 40px; }
+
+    /* ── Nav (ported from homepage / ST:AI page) ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 3rem;
+      background: rgba(9, 16, 15, 0.9);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(201,168,76,0.12);
+    }
+    .nav-logo {
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      text-decoration: none;
+    }
+    .nav-logo .smoking, .nav-logo .tigers { color: var(--gold); }
+    .nav-logo .domain { margin-left: 0.45em; font-weight: 300; font-size: 0.8em; color: var(--ink-mid); }
+
+    .nav-links { display: flex; align-items: center; gap: 2rem; }
+    .nav-link {
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.85);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-link:hover { color: rgba(245,240,232,1); }
+    .nav-link.current { color: var(--gold); }
+    .nav-link.cta {
+      color: var(--gold);
+      border: 1px solid rgba(201,168,76,0.25);
+      padding: 0.5rem 1.1rem;
+    }
+    .nav-link.cta:hover { background: rgba(201,168,76,0.08); color: var(--gold); }
+
+    .nav-item { position: relative; display: flex; align-items: center; }
+    .nav-item > .nav-link { display: flex; align-items: center; gap: 0.4rem; cursor: pointer; }
+    .nav-item.active > .nav-link { color: var(--ink); }
+    .caret {
+      width: 0; height: 0;
+      border-left: 3.5px solid transparent;
+      border-right: 3.5px solid transparent;
+      border-top: 3.5px solid currentColor;
+      opacity: 0.5;
+      transition: transform 0.2s;
+    }
+    .nav-item:hover .caret, .nav-item.open .caret { transform: rotate(180deg); opacity: 1; }
+
+    .dropdown {
+      position: absolute;
+      top: calc(100% + 0.85rem);
+      left: 50%;
+      transform: translateX(-50%) translateY(-8px);
+      min-width: 210px;
+      background: rgba(9, 16, 15, 0.97);
+      border: 1px solid rgba(201,168,76,0.25);
+      border-radius: 8px;
+      padding: 0.4rem 0;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+      z-index: 200;
+      backdrop-filter: blur(20px);
+    }
+    .nav-item:hover .dropdown, .nav-item.open .dropdown {
+      visibility: visible; opacity: 1; transform: translateX(-50%) translateY(0);
+    }
+    .dropdown a {
+      display: block;
+      padding: 0.55rem 1.25rem;
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      font-weight: 400;
+      color: var(--ink-mid);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.15s, background 0.15s;
+    }
+    .dropdown a:hover { color: var(--ink); background: rgba(245,240,232,0.06); }
+
+    .nav-hamburger {
+      display: none;
+      flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: 4px;
+    }
+    .nav-hamburger span { display: block; width: 22px; height: 1.5px; background: var(--ink); transition: all 0.25s; }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-hamburger { display: flex; }
+      .nav-links {
+        display: none;
+        position: fixed; top: 64px; left: 0; right: 0;
+        background: rgba(9,16,15,0.98);
+        backdrop-filter: blur(20px);
+        flex-direction: column; align-items: stretch;
+        padding: 1rem 1.5rem 1.5rem;
+        border-bottom: 1px solid rgba(201,168,76,0.12);
+        gap: 0; z-index: 99;
+      }
+      .nav-links.open { display: flex; }
+      .nav-item { flex-direction: column; align-items: flex-start; width: 100%; }
+      .nav-item > .nav-link { padding: 0.8rem 0; width: 100%; justify-content: space-between; }
+      .dropdown {
+        position: static; transform: none; visibility: visible; opacity: 1;
+        background: none; border: none; border-radius: 0;
+        padding: 0 0 0.75rem 1rem;
+        display: none; transition: none;
+      }
+      .nav-item.open .dropdown { display: block; }
+      .dropdown a { padding: 0.45rem 0; }
+    }
+
+    /* ── Section label / headings ── */
+    .section-label { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 52px; display: flex; align-items: center; gap: 14px; }
+    .body-text { font-size: 16px; font-weight: 300; color: var(--ink-mid); line-height: 1.82; }
+    .body-text p + p { margin-top: 20px; }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative; padding: 132px 0 96px; overflow: hidden;
+      border-bottom: 1px solid var(--line-blue);
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: url('/assets/pattern-artdeco-arches.webp');
+      background-size: 480px auto; background-position: center;
+      opacity: 0.16;
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+    .hero::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 180px;
+      background: linear-gradient(to bottom, transparent, var(--paper));
+      pointer-events: none;
+    }
+    .hero .wrap { position: relative; z-index: 1; }
+    .hero-glow { position: absolute; top: -60px; left: 50%; transform: translateX(-50%); width: 700px; height: 500px; background: radial-gradient(ellipse at center, rgba(201,168,76,0.06) 0%, transparent 70%); pointer-events: none; z-index: 0; }
+
+    .hero-card {
+      background: rgba(9, 16, 15, 0.82);
+      padding: 3.5rem 3.5rem;
+      max-width: 860px;
+      border: 1px solid rgba(245,240,232,0.06);
+    }
+    @media (max-width: 760px) {
+      .hero-card { padding: 2.5rem 1.75rem; }
+    }
+
+    .hero-eyebrow { display: flex; align-items: center; gap: 16px; margin-bottom: 40px; }
+    .hero-eyebrow::before { content: ''; display: block; width: 36px; height: 1px; background: var(--gold); flex-shrink: 0; }
+    .eyebrow-text { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); }
+
+    .hero h1 { font-family: var(--serif); font-size: clamp(2.2rem, 4.8vw, 3.75rem); font-weight: 300; line-height: 1.12; color: var(--ink); max-width: 780px; margin-bottom: 32px; }
+
+    .hero-sub { font-family: var(--sans); font-size: 1.05rem; font-weight: 300; color: var(--ink-mid); max-width: 640px; line-height: 1.78; }
+    .hero-sub + .hero-sub { margin-top: 20px; }
+
+    .hero-subhead {
+      font-family: var(--serif);
+      font-size: clamp(1.5rem, 3vw, 2.1rem);
+      font-weight: 300; font-style: italic;
+      color: var(--gold-lt);
+      line-height: 1.3;
+      max-width: 620px;
+      margin: 40px 0 40px;
+    }
+
+    .hero-actions { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+
+    .btn-gold { display: inline-block; font-family: var(--sans); font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--paper); background: var(--gold); padding: 16px 34px; text-decoration: none; transition: filter 0.2s, box-shadow 0.2s; box-shadow: 0 3px 12px rgba(0,0,0,0.45), inset 0 -1px 0 rgba(255,255,255,0.12), inset -1px 0 0 rgba(255,255,255,0.07); }
+    .btn-gold:hover { filter: brightness(1.12); box-shadow: 0 5px 18px rgba(0,0,0,0.5), inset 0 -1px 0 rgba(255,255,255,0.16), inset -1px 0 0 rgba(255,255,255,0.1); }
+
+    .btn-outline { display: inline-block; font-family: var(--sans); font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink); background: none; border: 1px solid rgba(245,240,232,0.22); padding: 15px 33px; text-decoration: none; transition: border-color 0.2s, color 0.2s; }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* ── Generic text section ── */
+    .text-section { padding: 96px 0; position: relative; overflow: hidden; }
+    .text-section.surface { background: var(--surface); border-bottom: 1px solid var(--line-blue); }
+    .text-section.pattern::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: url('/assets/pattern-artdeco.webp');
+      background-size: cover; background-position: center;
+      opacity: 0.08;
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+    .text-section.pattern-arch::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: url('/assets/pattern-artdeco-arches.webp');
+      background-size: 480px auto; background-position: center;
+      opacity: 0.1;
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+    .text-section .wrap { position: relative; z-index: 1; }
+    .text-section h2 { font-family: var(--serif); font-size: clamp(1.7rem, 3.2vw, 2.3rem); font-weight: 300; line-height: 1.28; color: var(--ink); margin-bottom: 32px; max-width: 820px; }
+    .text-section .body-text { max-width: 680px; }
+    #role .body-text p { color: rgba(245,240,232,0.62); }
+    .text-section .link-row { display: flex; gap: 32px; flex-wrap: wrap; margin-top: 36px; }
+    .text-link { font-family: var(--sans); font-size: 0.85rem; font-weight: 500; letter-spacing: 0.03em; color: var(--gold); text-decoration: none; transition: opacity 0.2s; }
+    .text-link:hover { opacity: 0.75; }
+
+    /* ── Grid sections (shared card pattern) ── */
+    .grid-section { padding: 96px 0; position: relative; overflow: hidden; border-bottom: 1px solid var(--line-blue); }
+    .grid-section.pattern::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: url('/assets/pattern-artdeco-arches.webp');
+      background-size: 480px auto; background-position: center;
+      opacity: 0.1;
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+    .grid-section .wrap { position: relative; z-index: 1; }
+    .grid-section h2 { font-family: var(--serif); font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 300; line-height: 1.22; color: var(--ink); white-space: nowrap; margin-bottom: 52px; }
+    @media (max-width: 640px) { .grid-section h2 { white-space: normal; } }
+
+    .grid-4 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line-blue); border: 1px solid var(--line-blue); }
+    @media (max-width: 660px) { .grid-4 { grid-template-columns: 1fr; } }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line-blue); border: 1px solid var(--line-blue); }
+    @media (max-width: 720px) { .grid-3 { grid-template-columns: 1fr; } }
+
+    .grid-card { background: var(--surface-2); padding: 44px 36px; box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.3); transition: transform 0.25s ease, box-shadow 0.25s ease; position: relative; overflow: hidden; }
+    .grid-card:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.35); }
+    .grid-card::before { content: ''; position: absolute; top: 0; left: 0; width: 2px; height: 0; background: var(--gold); transition: height 0.4s ease; }
+    .grid-card:hover::before { height: 100%; }
+    .grid-card strong { display: block; font-family: var(--serif); font-size: 21px; font-weight: 500; color: var(--ink); line-height: 1.3; margin-bottom: 14px; }
+    .grid-card p { font-size: 14.5px; font-weight: 300; color: var(--ink-mid); line-height: 1.75; }
+
+    /* ── CTA band ── */
+    .cta-band { padding: 116px 0; text-align: center; position: relative; overflow: hidden; }
+    .cta-band::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: url('/assets/pattern-artdeco.webp');
+      background-size: cover; background-position: center;
+      opacity: 0.08;
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+    .cta-band .wrap { position: relative; z-index: 1; }
+    .cta-band h2 { font-family: var(--serif); font-size: clamp(1.9rem, 3.5vw, 2.9rem); font-weight: 300; color: var(--ink); margin-bottom: 20px; }
+    .cta-band p { font-size: 1rem; font-weight: 300; color: var(--ink-mid); max-width: 520px; margin: 0 auto 40px; line-height: 1.75; }
+    .cta-band .hero-actions { justify-content: center; }
+
+    /* ── Footer (ported from homepage) ── */
+    .footer-wrap { position: relative; overflow: hidden; }
+    .footer-wrap::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: url('/assets/pattern-artdeco.webp');
+      background-size: cover; background-position: center; background-repeat: repeat;
+      opacity: 0.028;
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+    footer { position: relative; z-index: 1; padding: 3rem; border-top: 1px solid rgba(201,168,76,0.12); }
+    .footer-inner { max-width: var(--max); margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem; }
+    .footer-top { display: flex; justify-content: space-between; align-items: center; }
+    .footer-brand { font-family: var(--sans); font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-mid); }
+    .footer-brand span { color: var(--ink-mid); }
+    .footer-social { display: flex; gap: 1rem; align-items: center; }
+    .footer-icon { color: rgba(245,240,232,0.85); transition: color 0.2s ease; display: flex; align-items: center; }
+    .footer-icon svg { width: 22px; height: 22px; }
+    .footer-icon:hover { color: var(--gold); }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; gap: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(201,168,76,0.12); }
+    .footer-govrepo { font-family: var(--sans); font-size: 0.75rem; letter-spacing: 0.08em; color: rgba(245,240,232,0.85); text-decoration: none; transition: color 0.2s ease; }
+    .footer-govrepo:hover { color: var(--gold); }
+    .footer-note { font-size: 0.75rem; color: rgba(245,240,232,0.7); letter-spacing: 0.04em; }
+    @media (max-width: 768px) {
+      footer { padding: 2.5rem 1.5rem; }
+      .footer-top { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+    }
+
+    /* ── Scroll fade-ins ── */
+    .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .fade-up-delay-1 { transition-delay: 0.1s; }
+    .fade-up-delay-2 { transition-delay: 0.2s; }
+    .fade-up-delay-3 { transition-delay: 0.3s; }
+    .fade-up-delay-4 { transition-delay: 0.4s; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="/"><span class="smoking">Smoking</span><span class="tigers">Tigers</span><span class="domain">Enterprises</span></a>
+    <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links" role="navigation">
+
+      <div class="nav-item">
+        <a class="nav-link" href="#" aria-haspopup="true" aria-expanded="false">
+          Work With Us <span class="caret" aria-hidden="true"></span>
+        </a>
+        <div class="dropdown" role="menu">
+          <a href="/for-founders" role="menuitem">For Founders</a>
+          <a href="/for-smes" role="menuitem">For SMEs</a>
+          <a href="/for-enterprise" role="menuitem">For Enterprise</a>
+          <a href="/contribute" role="menuitem">Contribute as an Expert</a>
+        </div>
+      </div>
+
+      <div class="nav-item">
+        <a class="nav-link" href="#" aria-haspopup="true" aria-expanded="false">
+          Our Offers <span class="caret" aria-hidden="true"></span>
+        </a>
+        <div class="dropdown" role="menu">
+          <a href="/stai" role="menuitem">ST:AI</a>
+          <a href="/media" role="menuitem">Media</a>
+          <a href="/governance" role="menuitem">Governance</a>
+        </div>
+      </div>
+
+      <a class="nav-link current" href="/community">Community</a>
+      <a class="nav-link cta" href="/schedule">Schedule a Meeting</a>
+
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="wrap">
+      <div class="hero-card">
+        <div class="hero-eyebrow">
+          <span class="eyebrow-text">The AI Ops Manager Community</span>
+        </div>
+        <h1>For the people that<br>AI systems depend on.</h1>
+        <p class="hero-sub">The AI Ops Manager is one of the most consequential emerging roles in modern organizations. The person who stays close enough to notice when something drifts. Who holds the relationship between the system and the people it serves. Who carries the knowledge of how it all fits together &mdash; often without a job title, a peer group, or a playbook to work from.</p>
+        <p class="hero-sub">This community exists for that person. To build the playbook together, share what's working across organizations, and give the people doing this work the peers they deserve.</p>
+        <h2 class="hero-subhead">Where people already understand<br>what you're navigating.</h2>
+        <div class="hero-actions">
+          <a class="btn-gold" href="https://discord.gg/REPLACE-WITH-INVITE" target="_blank" rel="noopener">Join on Discord</a>
+          <a class="btn-outline" href="#role">Learn About the Role</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What the community is for -->
+  <section class="grid-section">
+    <div class="wrap">
+      <p class="section-label fade-up">Inside the Community</p>
+      <h2 class="fade-up">Practical, peer-driven, and built for the work.</h2>
+      <div class="grid-4">
+        <div class="grid-card fade-up fade-up-delay-1">
+          <strong>Shared practice</strong>
+          <p>Patterns, workflows, and approaches that travel between organizations. What's working, what's breaking, and what the next version looks like.</p>
+        </div>
+        <div class="grid-card fade-up fade-up-delay-2">
+          <strong>Open inquiry</strong>
+          <p>Questions that don't have answers yet. Honest conversation about what this role actually requires, what AI systems actually do, and where the limits are.</p>
+        </div>
+        <div class="grid-card fade-up fade-up-delay-3">
+          <strong>Work and opportunity</strong>
+          <p>Engagements, collaborations, and roles surfaced through the network. AI Ops Managers working within organizations connecting with the specialists and teams who can extend their capability.</p>
+        </div>
+        <div class="grid-card fade-up fade-up-delay-4">
+          <strong>Peer resilience</strong>
+          <p>Connection between people doing this role across different organizations and sectors. The kind of support that only comes from others who understand what you're actually navigating.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Role -->
+  <section class="text-section pattern" id="role">
+    <div class="wrap">
+      <p class="section-label fade-up">A New Kind of Role</p>
+      <h2 class="fade-up">The most important person in an AI-powered organization rarely has a title (yet.)</h2>
+      <div class="body-text fade-up fade-up-delay-1">
+        <p>The AI Ops Manager sits at the intersection of operations, governance, and AI literacy. They notice changes before they become problems. They maintain the living relationship between the system and the people it serves. They carry the full picture &mdash; the dependencies, the risks, the fixes, the context that nobody else holds.</p>
+        <p>Most organizations have someone doing this work already. They picked it up alongside another role, or stepped into it because nobody else did. They're figuring out the boundaries of the job in real time, usually without peers who understand what it actually involves.</p>
+        <p>This community is where that changes.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Who this is for -->
+  <section class="grid-section">
+    <div class="wrap">
+      <p class="section-label fade-up">The Right Fit</p>
+      <h2 class="fade-up">Three ways people arrive here.</h2>
+      <div class="grid-3">
+        <div class="grid-card fade-up fade-up-delay-1">
+          <strong>Drawn to the frontier</strong>
+          <p>Operating at the edge of AI implementation, agentic systems, or organizational design &mdash; and looking for the community doing serious work in this space.</p>
+        </div>
+        <div class="grid-card fade-up fade-up-delay-2">
+          <strong>Developing into the role</strong>
+          <p>Moving through an ST:AI transformation engagement and building the capability to own and run the systems being built for your organization.</p>
+        </div>
+        <div class="grid-card fade-up fade-up-delay-3">
+          <strong>Already in the role</strong>
+          <p>Running AI systems inside an organization and looking for peers, patterns, and a community that understands what the work actually involves.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What's happening -->
+  <section class="text-section pattern-arch">
+    <div class="wrap">
+      <p class="section-label fade-up">The Community in Motion</p>
+      <h2 class="fade-up">Active, open, and growing.</h2>
+      <div class="body-text fade-up fade-up-delay-1">
+        <p>The community lives primarily on Discord, with regular structured sessions, open channels for daily practice sharing, and working groups forming around specific domains and challenges.</p>
+        <p>Starting points for new members: introduce yourself, share what you're running, ask the question you've been sitting on. The community is at its best when people arrive with real work.</p>
+      </div>
+      <div class="link-row fade-up fade-up-delay-2">
+        <a class="text-link" href="https://discord.gg/REPLACE-WITH-INVITE" target="_blank" rel="noopener">Join the Discord &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Part of something larger -->
+  <section class="text-section">
+    <div class="wrap">
+      <p class="section-label fade-up">The Bigger Picture</p>
+      <div class="body-text fade-up fade-up-delay-1">
+        <p>This community sits within SmokingTigers.Enterprises &mdash; a cooperative built around the idea that the people doing the most consequential work in the emerging AI economy deserve peers, infrastructure, and a stake in what gets built.</p>
+        <p>The AI Ops Manager role is central to how ST:AI works with client organizations. The community is where the people carrying that role &mdash; across organizations, sectors, and stages &mdash; come together to build something more durable than any single implementation.</p>
+        <p>The standards, patterns, and practices that emerge here feed back into everything ST:AI builds. Better practice in the community means better systems in the organizations means stronger evidence of what's actually possible.</p>
+      </div>
+      <div class="link-row fade-up fade-up-delay-2">
+        <a class="text-link" href="/stai">Learn about ST:AI &rarr;</a>
+        <a class="text-link" href="/">Learn about our cooperative &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-band">
+    <div class="wrap">
+      <h2 class="fade-up">Ready to find your people?</h2>
+      <p class="fade-up fade-up-delay-1">The community is open. Come in with a question, a pattern worth sharing, or just curiosity about where this is all going.</p>
+      <div class="hero-actions fade-up fade-up-delay-2">
+        <a class="btn-gold" href="https://discord.gg/REPLACE-WITH-INVITE" target="_blank" rel="noopener">Join on Discord</a>
+        <a class="btn-outline" href="/schedule">Schedule a Conversation</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer-wrap">
+    <footer>
+      <div class="footer-inner">
+        <div class="footer-top">
+          <p class="footer-brand">Smoking<span>Tigers</span>.Enterprises</p>
+          <div class="footer-social">
+            <a href="https://github.com/SmokingTigers" class="footer-icon" target="_blank" rel="noopener" aria-label="GitHub">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+              </svg>
+            </a>
+            <a href="https://linkedin.com/company/smokingtiger-enterprises" class="footer-icon" target="_blank" rel="noopener" aria-label="LinkedIn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                <rect x="2" y="9" width="4" height="12"/>
+                <circle cx="4" cy="4" r="2"/>
+              </svg>
+            </a>
+            <a href="https://youtube.com/@smokingtiges" class="footer-icon" target="_blank" rel="noopener" aria-label="YouTube">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/>
+                <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p class="footer-note">&copy; 2026 SmokingTigers.Enterprises. All rights reserved.</p>
+          <a href="https://github.com/SmokingTigers/GovRepo" class="footer-govrepo" target="_blank" rel="noopener">
+            GovRepo on GitHub &rarr;
+          </a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Scroll fade-in observer
+    const fadeEls = document.querySelectorAll('.fade-up');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(el => {
+        if (el.isIntersecting) {
+          el.target.classList.add('visible');
+          observer.unobserve(el.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    fadeEls.forEach(el => observer.observe(el));
+  </script>
+
+  <script>
+    // Nav hamburger
+    const hamburger = document.querySelector('.nav-hamburger');
+    const navLinks  = document.getElementById('nav-links');
+    hamburger.addEventListener('click', () => {
+      const open = hamburger.classList.toggle('open');
+      navLinks.classList.toggle('open', open);
+      hamburger.setAttribute('aria-expanded', String(open));
+    });
+
+    // Dropdown tap-to-toggle on mobile
+    document.querySelectorAll('.nav-item').forEach(item => {
+      const trigger = item.querySelector(':scope > .nav-link[aria-haspopup]');
+      if (!trigger) return;
+      trigger.addEventListener('click', e => {
+        if (window.innerWidth <= 768) {
+          e.preventDefault();
+          const open = item.classList.toggle('open');
+          trigger.setAttribute('aria-expanded', String(open));
+        }
+      });
+    });
+
+    // Close everything on outside click
+    document.addEventListener('click', e => {
+      if (!e.target.closest('nav')) {
+        navLinks.classList.remove('open');
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+      }
+    });
+  </script>
+</body>
+</html>
